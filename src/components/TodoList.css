@@ -1,0 +1,11 @@
+.todo-item {
+    width: 200px;
+    border: 1px solid black;
+    padding: 5px;
+}
+.todo-group {
+    justify-self: center;
+}
+.todo-item.done {
+    text-decoration: line-through;
+}
