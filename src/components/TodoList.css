@@ -34,6 +34,12 @@
     font-weight: bold;
 }
 h1 {
-    text-align: center; /* 标题居中 */
-    color: #333; /* 标题颜色 */
+    text-align: center;
+    color: #333;
+}
+.empty-tip {
+    color: #333;;
+    font-size: 16px;
+    margin: 12px 0;
+    text-align: center;
 }
