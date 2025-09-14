@@ -31,7 +31,7 @@ const TodoList = () => {
 
     return <div className={'todo-group'}>
         <div>
-            <div>This is the TodoList Component.</div>
+            <h1>Todo List</h1>
             {
                 state.map(({id, text, done}) => {
                     return <div className={`todo-item ${done ? 'done' : ''}`} key={id}>
