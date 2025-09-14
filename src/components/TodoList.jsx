@@ -4,6 +4,7 @@ import "./TodoList.css"
 
 const TodoList = () => {
     const {state, dispatch} = useContext(TodoContext);
+    const [input, setInput] = useState("");
 
     function toggleDone(id) {
         const action = {type: 'DONE', id: id};
@@ -12,6 +13,20 @@ const TodoList = () => {
 
     function deleteTodo(id) {
         dispatch({type: 'DELETE', id});
+    }
+
+    function addTodo() {
+        if (input.trim()) {
+            dispatch({
+                type: 'ADD',
+                todo: {
+                    id: state.length + 1,
+                    text: input,
+                    done: false
+                }
+            });
+            setInput("");
+        }
     }
 
     return <div className={'todo-group'}>
@@ -25,6 +40,15 @@ const TodoList = () => {
                     </div>
                 })
             }
+        </div>
+        <div className="add-row">
+            <input
+                type="text"
+                value={input}
+                onChange={e => setInput(e.target.value)}
+                className="add-input"
+            />
+            <button className="add-btn" onClick={addTodo}>add</button>
         </div>
     </div>
 }

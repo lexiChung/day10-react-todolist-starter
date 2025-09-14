@@ -23,3 +23,13 @@
     height: 32px;
     align-self: center;
 }
+.add-btn {
+    margin-left: 12px;
+    padding: 6px 18px;
+    background: #e0f0ff;
+    color: #1976d2;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
