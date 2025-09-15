@@ -11,6 +11,9 @@ const TodoList = () => {
     const [editingTodo, setEditingTodo] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
+    const undoneTodos = state.filter(todo => !todo.done);
+
+    console.log(undoneTodos);
 
     useEffect(() => {
         getTodos().then((response) => {
@@ -38,9 +41,9 @@ const TodoList = () => {
         setShowModal(true);
     }
     const handleSave = async (id) => {
-        const newTodo= {
+        const newTodo = {
             ...editingTodo,
-            text : editText.trim()
+            text: editText.trim()
         }
         await updateTodo(newTodo.id, newTodo);
         const response = await getTodos();
@@ -57,22 +60,33 @@ const TodoList = () => {
     const handleTextClick = (id) => {
         navigate(`/todos/${id}`);
     };
+    const handleToggleDone = async (id) => {
+        const response = await getTodoById(id);
+        const updatedTodo = {...response.data, done: !response.data.done};
+        console.log(updatedTodo);
+        await updateTodo(id, updatedTodo);
+        const todosResponse = await getTodos();
+        dispatch({type: 'LOAD_TODOS', todos: todosResponse.data});
+    }
 
     return <div className={'todo-group'}>
         <div>
             <h1>Todo List</h1>
-            {state.length === 0 && (
+            {undoneTodos.length === 0 && (
                 <div className="empty-tip">add the things you need to do today...</div>
             )}
             {
-                state.map(({id, text, done}) => {
+                undoneTodos.map(({id, text, done}) => {
                     return <div className={`todo-item ${done ? 'done' : ''}`} key={id}>
                         <span onClick={() => handleTextClick(id)} style={{cursor: 'pointer'}}>{text}</span>
                         <div>
-                            <button className="delete-btn" onClick={() => handleDelete(id)}>delete</button>
+                            <button className="update-btn" onClick={() => handleToggleDone(id)}>achieve</button>
                         </div>
                         <div>
                             <button className="update-btn" onClick={() => handleUpdate(id)}>update</button>
+                        </div>
+                        <div>
+                            <button className="delete-btn" onClick={() => handleDelete(id)}>delete</button>
                         </div>
                     </div>
                 })
@@ -104,7 +118,7 @@ const TodoList = () => {
                 </div>
             </div>
         )}
-</div>
+    </div>
 }
 
 export default TodoList

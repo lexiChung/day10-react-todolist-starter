@@ -7,6 +7,7 @@ import {createBrowserRouter, RouterProvider} from "react-router";
 import {DefaultLayout} from "./layout/DefaultLayout";
 import {TodoDetail} from "./components/TodoDetail";
 import {ErrorPage} from "./components/ErrorPage";
+import {DonePage} from "./components/DonePage";
 
 const routes = [
     {
@@ -29,7 +30,11 @@ const routes = [
             {
                 path: 'todos/:key',
                 element: <TodoDetail/>
-            }
+            },
+            {
+                path: 'done',
+                element: <DonePage/>,
+            },
         ]
     }
 ]
@@ -42,7 +47,6 @@ function App() {
     return (
         <div className="App">
             <TodoContext.Provider value={{state, dispatch}}>
-              {/*<TodoList/>*/}
                 <RouterProvider router={router}></RouterProvider>
             </TodoContext.Provider>
         </div>
