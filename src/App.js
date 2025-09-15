@@ -18,7 +18,7 @@ const routes = [
         children: [
             {
                 path: '',
-                element: <h1>Home Page</h1>
+                element: <h1>Welcome to Todolist!</h1>
             },
             {
                 path: 'about',

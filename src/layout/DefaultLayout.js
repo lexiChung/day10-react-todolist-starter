@@ -30,6 +30,5 @@ export function DefaultLayout() {
         <Content>
             <Outlet></Outlet>
         </Content>
-        <Footer>footer copyright</Footer>
     </Layout>
 }
