@@ -1,32 +1,40 @@
 import {TodoContext} from "../contexts/TodoContext";
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import "./TodoList.css"
+import {addTodo, deleteTodo, getTodoById, getTodos, updateTodo} from "../apis/todos";
 
 const TodoList = () => {
     const {state, dispatch} = useContext(TodoContext);
     const [input, setInput] = useState("");
 
-    function toggleDone(id) {
-        const action = {type: 'DONE', id: id};
-        dispatch(action)
-    }
+    useEffect(() => {
+        getTodos().then((response) => {
+            dispatch({type:'LOAD_TODOS',todos : response.data})
+        })
+    },[dispatch]);
 
-    function deleteTodo(id) {
+    const handleDelete = async (id) => {
+        await deleteTodo(id);
         dispatch({type: 'DELETE', id});
     }
-
-    function addTodo() {
-        if (input.trim()) {
-            dispatch({
-                type: 'ADD',
-                todo: {
-                    id: state.length + 1,
-                    text: input,
-                    done: false
-                }
-            });
-            setInput("");
+    const handleSubmit = async () => {
+        const newTodo = {
+            done: false,
+            text: input.trim()
         }
+        const response = await addTodo(newTodo);
+        dispatch({type: 'ADD', todo: response.data});
+        setInput("");
+    }
+    const handleUpdate = async (id) => {
+        const response = await getTodoById(id);
+        const newTodo = {
+            ...response.data,
+            done: !response.data.done
+        }
+        await updateTodo(id, newTodo);
+        console.log(newTodo)
+        dispatch({type: 'DONE', id, todo: newTodo});
     }
 
     return <div className={'todo-group'}>
@@ -38,9 +46,9 @@ const TodoList = () => {
             {
                 state.map(({id, text, done}) => {
                     return <div className={`todo-item ${done ? 'done' : ''}`} key={id}>
-                        <span onClick={() => toggleDone(id)} style={{cursor: 'pointer'}}>{text}</span>
+                        <span onClick={() => handleUpdate(id)} style={{cursor: 'pointer'}}>{text}</span>
                         <div>
-                            <button className="delete-btn" onClick={() => deleteTodo(id)}>X</button>
+                            <button className="delete-btn" onClick={() => handleDelete(id)}>X</button>
                         </div>
                     </div>
                 })
@@ -53,7 +61,7 @@ const TodoList = () => {
                 onChange={e => setInput(e.target.value)}
                 className="add-input"
             />
-            <button className="add-btn" onClick={addTodo}>add</button>
+            <button className="add-btn" onClick={handleSubmit}>add</button>
         </div>
     </div>
 }

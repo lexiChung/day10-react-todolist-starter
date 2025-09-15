@@ -17,6 +17,8 @@ export const todoReducer = (state, action) => {
             return state.filter(todo => todo.id !== action.id);
         case 'ADD':
             return [...state, action.todo];
+         case 'LOAD_TODOS':
+             return action.todos;
         default:
             return state;
     }

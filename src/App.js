@@ -3,36 +3,23 @@ import './App.css';
 import TodoList from "./components/TodoList";
 import {initialState, todoReducer} from "./reducers/todoReducer";
 import {TodoContext} from "./contexts/TodoContext";
-import {Outlet, RouterProvider, createBrowserRouter, NavLink, useParams} from "react-router";
-
-function DefaultLayout() {
-    return <>
-        <header>
-            <nav>
-                <ul>
-                    <li><NavLink to={'/'}>Home</NavLink></li>
-                    <li><NavLink to={'/todos'}>TodoList</NavLink></li>
-                    <li><NavLink to={'todos/:key'}>ToDoDetail</NavLink></li>
-                    <li><NavLink to={'/about'}>About</NavLink></li>
-                </ul>
-            </nav>
-        </header>
-        <main>
-            <Outlet></Outlet>
-        </main>
-        <footer>footer copyright</footer>
-    </>
-}
+import {createBrowserRouter, RouterProvider, useParams} from "react-router";
+import {DefaultLayout} from "./layout/DefaultLayout";
 
 function TodoDetail() {
     const {key} = useParams();
     return <h1>this is {key} detail</h1>;
 }
 
+function ErrorPage() {
+    return <h1>Error</h1>;
+}
+
 const routes = [
     {
         path: '/',
         element: <DefaultLayout/>,
+        errorElement:<ErrorPage></ErrorPage>,
         children: [
             {
                 path: '',
@@ -65,7 +52,6 @@ function App() {
               {/*<TodoList/>*/}
                 <RouterProvider router={router}></RouterProvider>
             </TodoContext.Provider>
-
         </div>
     );
 }
