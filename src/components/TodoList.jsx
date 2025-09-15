@@ -39,7 +39,9 @@ const TodoList = () => {
                 state.map(({id, text, done}) => {
                     return <div className={`todo-item ${done ? 'done' : ''}`} key={id}>
                         <span onClick={() => toggleDone(id)} style={{cursor: 'pointer'}}>{text}</span>
-                        <button className="delete-btn" onClick={() => deleteTodo(id)}>X</button>
+                        <div>
+                            <button className="delete-btn" onClick={() => deleteTodo(id)}>X</button>
+                        </div>
                     </div>
                 })
             }
