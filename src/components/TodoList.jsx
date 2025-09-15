@@ -6,12 +6,15 @@ import {addTodo, deleteTodo, getTodoById, getTodos, updateTodo} from "../apis/to
 const TodoList = () => {
     const {state, dispatch} = useContext(TodoContext);
     const [input, setInput] = useState("");
+    const [editText, setEditText] = useState("");
+    const [editingTodo, setEditingTodo] = useState(null);
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         getTodos().then((response) => {
-            dispatch({type:'LOAD_TODOS',todos : response.data})
+            dispatch({type: 'LOAD_TODOS', todos: response.data})
         })
-    },[dispatch]);
+    }, [dispatch]);
 
     const handleDelete = async (id) => {
         await deleteTodo(id);
@@ -26,7 +29,7 @@ const TodoList = () => {
         dispatch({type: 'ADD', todo: response.data});
         setInput("");
     }
-    const handleUpdate = async (id) => {
+    const handleToggleUpdate = async (id) => {
         const response = await getTodoById(id);
         const newTodo = {
             ...response.data,
@@ -35,6 +38,31 @@ const TodoList = () => {
         await updateTodo(id, newTodo);
         console.log(newTodo)
         dispatch({type: 'DONE', id, todo: newTodo});
+    }
+
+    const handleUpdate = async (id) => {
+        const response = await getTodoById(id);
+        setEditingTodo(response.data);
+        setEditText(response.data.text);
+        setShowModal(true);
+    }
+
+    const handleSave = async (id) => {
+        const newTodo= {
+            ...editingTodo,
+            text : editText.trim()
+        }
+        await updateTodo(newTodo.id, newTodo);
+        const response = await getTodos();
+        dispatch({type: 'LOAD_TODOS', todos: response.data});
+        setShowModal(false);
+        setEditingTodo(null);
+        setEditText("");
+    }
+    const handleCancel = () => {
+        setShowModal(false);
+        setEditingTodo(null);
+        setEditText("");
     }
 
     return <div className={'todo-group'}>
@@ -46,9 +74,12 @@ const TodoList = () => {
             {
                 state.map(({id, text, done}) => {
                     return <div className={`todo-item ${done ? 'done' : ''}`} key={id}>
-                        <span onClick={() => handleUpdate(id)} style={{cursor: 'pointer'}}>{text}</span>
+                        <span onClick={() => handleToggleUpdate(id)} style={{cursor: 'pointer'}}>{text}</span>
                         <div>
-                            <button className="delete-btn" onClick={() => handleDelete(id)}>X</button>
+                            <button className="delete-btn" onClick={() => handleDelete(id)}>delete</button>
+                        </div>
+                        <div>
+                            <button className="update-btn" onClick={() => handleUpdate(id)}>update</button>
                         </div>
                     </div>
                 })
@@ -63,7 +94,24 @@ const TodoList = () => {
             />
             <button className="add-btn" onClick={handleSubmit}>add</button>
         </div>
-    </div>
+        {showModal && (
+            <div className="modal-overlay">
+                <div className="modal">
+                    <h3>编辑待办事项</h3>
+                    <input
+                        type="text"
+                        value={editText}
+                        onChange={e => setEditText(e.target.value)}
+                        className="edit-input"
+                    />
+                    <div className="modal-buttons">
+                        <button onClick={handleSave} className="save-btn">保存</button>
+                        <button onClick={handleCancel} className="cancel-btn">取消</button>
+                    </div>
+                </div>
+            </div>
+        )}
+</div>
 }
 
 export default TodoList
