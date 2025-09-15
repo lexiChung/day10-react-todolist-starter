@@ -8,6 +8,7 @@ import {DefaultLayout} from "./layout/DefaultLayout";
 import {TodoDetail} from "./components/TodoDetail";
 import {ErrorPage} from "./components/ErrorPage";
 import {DonePage} from "./components/DonePage";
+import {AboutPage} from "./components/AboutPage";
 
 const routes = [
     {
@@ -21,7 +22,7 @@ const routes = [
             },
             {
                 path: 'about',
-                element: <h1>about page</h1>,
+                element: <AboutPage/>,
             },
             {
                 path: 'todos',
