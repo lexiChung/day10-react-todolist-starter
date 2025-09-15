@@ -3,7 +3,7 @@ import './App.css';
 import TodoList from "./components/TodoList";
 import {initialState, todoReducer} from "./reducers/todoReducer";
 import {TodoContext} from "./contexts/TodoContext";
-import {Navigate, Outlet, RouterProvider, createBrowserRouter, NavLink} from "react-router";
+import {Outlet, RouterProvider, createBrowserRouter, NavLink, useParams} from "react-router";
 
 function DefaultLayout() {
     return <>
@@ -11,7 +11,8 @@ function DefaultLayout() {
             <nav>
                 <ul>
                     <li><NavLink to={'/'}>Home</NavLink></li>
-                    <li><NavLink to={'/todos'}>Todo List</NavLink></li>
+                    <li><NavLink to={'/todos'}>TodoList</NavLink></li>
+                    <li><NavLink to={'todos/:key'}>ToDoDetail</NavLink></li>
                     <li><NavLink to={'/about'}>About</NavLink></li>
                 </ul>
             </nav>
@@ -21,6 +22,11 @@ function DefaultLayout() {
         </main>
         <footer>footer copyright</footer>
     </>
+}
+
+function TodoDetail() {
+    const {key} = useParams();
+    return <h1>this is {key} detail</h1>;
 }
 
 const routes = [
@@ -39,6 +45,10 @@ const routes = [
             {
                 path: 'todos',
                 element: <TodoList/>,
+            },
+            {
+                path: 'todos/:key',
+                element: <TodoDetail/>
             }
         ]
     }
