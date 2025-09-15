@@ -2,6 +2,7 @@ import {TodoContext} from "../contexts/TodoContext";
 import {useContext, useEffect, useState} from "react";
 import "./TodoList.css"
 import {addTodo, deleteTodo, getTodoById, getTodos, updateTodo} from "../apis/todos";
+import {useNavigate} from "react-router";
 
 const TodoList = () => {
     const {state, dispatch} = useContext(TodoContext);
@@ -9,6 +10,7 @@ const TodoList = () => {
     const [editText, setEditText] = useState("");
     const [editingTodo, setEditingTodo] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         getTodos().then((response) => {
@@ -29,24 +31,12 @@ const TodoList = () => {
         dispatch({type: 'ADD', todo: response.data});
         setInput("");
     }
-    const handleToggleUpdate = async (id) => {
-        const response = await getTodoById(id);
-        const newTodo = {
-            ...response.data,
-            done: !response.data.done
-        }
-        await updateTodo(id, newTodo);
-        console.log(newTodo)
-        dispatch({type: 'DONE', id, todo: newTodo});
-    }
-
     const handleUpdate = async (id) => {
         const response = await getTodoById(id);
         setEditingTodo(response.data);
         setEditText(response.data.text);
         setShowModal(true);
     }
-
     const handleSave = async (id) => {
         const newTodo= {
             ...editingTodo,
@@ -64,6 +54,9 @@ const TodoList = () => {
         setEditingTodo(null);
         setEditText("");
     }
+    const handleTextClick = (id) => {
+        navigate(`/todos/${id}`);
+    };
 
     return <div className={'todo-group'}>
         <div>
@@ -74,7 +67,7 @@ const TodoList = () => {
             {
                 state.map(({id, text, done}) => {
                     return <div className={`todo-item ${done ? 'done' : ''}`} key={id}>
-                        <span onClick={() => handleToggleUpdate(id)} style={{cursor: 'pointer'}}>{text}</span>
+                        <span onClick={() => handleTextClick(id)} style={{cursor: 'pointer'}}>{text}</span>
                         <div>
                             <button className="delete-btn" onClick={() => handleDelete(id)}>delete</button>
                         </div>

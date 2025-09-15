@@ -13,10 +13,6 @@ const items = [
         key: 'todolist'
     },
     {
-        label: <NavLink to={'todos/:key'}>ToDoDetail</NavLink>,
-        key: 'todoDetail'
-    },
-    {
         label: <NavLink to={'/about'}>About</NavLink>,
         key: 'about'
     }

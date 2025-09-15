@@ -3,17 +3,10 @@ import './App.css';
 import TodoList from "./components/TodoList";
 import {initialState, todoReducer} from "./reducers/todoReducer";
 import {TodoContext} from "./contexts/TodoContext";
-import {createBrowserRouter, RouterProvider, useParams} from "react-router";
+import {createBrowserRouter, RouterProvider} from "react-router";
 import {DefaultLayout} from "./layout/DefaultLayout";
-
-function TodoDetail() {
-    const {key} = useParams();
-    return <h1>this is {key} detail</h1>;
-}
-
-function ErrorPage() {
-    return <h1>Error</h1>;
-}
+import {TodoDetail} from "./components/TodoDetail";
+import {ErrorPage} from "./components/ErrorPage";
 
 const routes = [
     {
