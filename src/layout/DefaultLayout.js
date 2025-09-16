@@ -27,8 +27,9 @@ export function DefaultLayout() {
         <Header>
             <Menu theme="dark" mode="horizontal" items={items}></Menu>
         </Header>
-        <Content>
+        <Content style={{ minHeight: '100vh' , padding: '20px 50px'}}>
             <Outlet></Outlet>
         </Content>
+        <Footer></Footer>
     </Layout>
 }

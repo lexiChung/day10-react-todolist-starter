@@ -96,7 +96,7 @@ const TodoList = () => {
                                     border: '1px solid #f0f0f0',
                                     boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
                                 }}
-                                bodyStyle={{padding: 16}}
+                                styles={{ body: { padding: 16 } }}
                             >
                                 <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                                     <Text

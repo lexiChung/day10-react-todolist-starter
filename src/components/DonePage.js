@@ -46,7 +46,7 @@ export function DonePage() {
                                     boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
                                     backgroundColor: '#f6ffed'
                                 }}
-                                bodyStyle={{padding: 16}}
+                                styles={{ body: { padding: 16 } }}
                             >
                                 <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                                     <Text style={{flex: 1, fontSize: 16, color: '#262626'}}>{text}</Text>
